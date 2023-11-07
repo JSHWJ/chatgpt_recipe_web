@@ -11,7 +11,7 @@ const openai = new OpenAI({
 
 const express = require("express");
 const app = express();
-const port = 5000; // 원하는 포트로 설정
+
 
 const cors = require("cors");
 const corsOptions = {
@@ -20,23 +20,22 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-// JSON 파싱을 위한 미들웨어 설정
 app.use(express.json());
 
 app.post("/api/recipe", async (req, res) => {
   try {
-    // Frame3 컴포넌트에서 보낸 선택한 재료를 가져옵니다.
+   
     const { ingredients } = req.body;
 
     const ingredientsString = ingredients.join(", ");
 
-    // OpenAI API에 요청을 보내기 전에 요청 내용을 콘솔에 출력
+   
     console.log(
       "Request to OpenAI: Create a recipe using ingredients: ",
       ingredientsString
     );
 
-    // OpenAI API에 요청을 보냅니다.
+
     const response = await openai.chat.completions.create({
       messages: [
         {
@@ -55,14 +54,13 @@ app.post("/api/recipe", async (req, res) => {
 
     console.log("Response from OpenAI: Recipe created: ", recipe);
 
-    // 클라이언트로 레시피를 응답합니다.
-    res.json({ recipe });
+   
   } catch (error) {
     console.error("Error fetching recipe from OpenAI:", error);
     res.status(500).json({ error: "Failed to fetch recipe" });
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
