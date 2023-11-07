@@ -11,7 +11,7 @@ const openai = new OpenAI({
 
 const express = require("express");
 const app = express();
-
+const PORT = 5000;
 
 const cors = require("cors");
 const corsOptions = {
@@ -24,17 +24,14 @@ app.use(express.json());
 
 app.post("/api/recipe", async (req, res) => {
   try {
-   
     const { ingredients } = req.body;
 
     const ingredientsString = ingredients.join(", ");
 
-   
     console.log(
       "Request to OpenAI: Create a recipe using ingredients: ",
       ingredientsString
     );
-
 
     const response = await openai.chat.completions.create({
       messages: [
@@ -53,8 +50,6 @@ app.post("/api/recipe", async (req, res) => {
     //const recipe = response.completion.choices[0].message.content;
 
     console.log("Response from OpenAI: Recipe created: ", recipe);
-
-   
   } catch (error) {
     console.error("Error fetching recipe from OpenAI:", error);
     res.status(500).json({ error: "Failed to fetch recipe" });
